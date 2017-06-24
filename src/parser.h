@@ -12,6 +12,10 @@ public:
   Parser(Bot &bot);
   void parseLine();
 private:
+  std::string parseWord(std::stringstream &myStream);
+  void parseSettings(std::stringstream &myStream);
+  void parseUpdate(std::stringstream &myStream);
+  void parseAction(std::stringstream &myStream);
   Bot bot;
   int width;
   int height;

@@ -26,7 +26,7 @@ void Parser::parseLine()
   {
     parseAction(myStream);
   } else {
-    cout << "Undefined process.." << endl;
+    cerr << "Undefined process.." << endl;
   }
 }
 
@@ -78,7 +78,7 @@ void Parser::parseSettings(stringstream &myStream)
   {
     bot.setTimePerMove(parseInt(myStream));
   } else {
-    cout << "Undefined settings.." << endl;
+    cerr << "Undefined settings.." << endl;
   }
 
 }
@@ -95,7 +95,7 @@ void Parser::parseUpdate(stringstream &myStream)
   {
     bot.updateGameField(parseWord(myStream));
   } else {
-    cout << "Undefined update.." << endl;
+    cerr << "Undefined update.." << endl;
   }
 }
 
@@ -107,6 +107,6 @@ void Parser::parseAction(stringstream &myStream)
   {
     bot.makeMove(parseInt(myStream));
   } else {
-    cout << "Undefined action.." << endl;
+    cerr << "Undefined action.." << endl;
   }
 }

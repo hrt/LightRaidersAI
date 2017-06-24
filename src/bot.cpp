@@ -41,7 +41,10 @@ void Bot::setFieldWidth(int width)
 
 void Bot::setFieldHeight(int height)
 {
+  last_p0 = -10000;
+  last_p1 = -10000;
   this->height = height;
+  initialiseField();
 }
 
 void Bot::updateGameRound(int round)
@@ -49,27 +52,115 @@ void Bot::updateGameRound(int round)
   this->round = round;
 }
 
-void Bot::updateGameField(std::string field)
+void Bot::updateGameField(string positions)
 {
-  this->field = field;
+  initialiseField();
+  vector<string> position = split(positions, POS_DELIM);
+  for (int j = 0; j < height; j++)
+  {
+    for (int i = 0; i < width; i++)
+      field[i][j] = convertPosition(position[i + j * width], i + j * width);
+  }
+  // this->field = field;
+}
+
+int Bot::convertPosition(string position, int p)
+{
+  if (!position.compare(POS_EMPTY))
+  {
+    return EMPTY;
+  } else if (!position.compare(POS_WALL))
+  {
+    return WALL;
+  } else if (!position.compare(POS_P0))
+  {
+    int difference = p - last_p0;
+    last_p0 = p;
+    switch (difference)
+    {
+      case MOVED_UP: return UP_P0;
+      case MOVED_DOWN: return DOWN_P0;
+      case MOVED_LEFT: return LEFT_P0;
+      case MOVED_RIGHT: return RIGHT_P0;
+      default: return ANY_P0;
+    }
+  } else if (!position.compare(POS_P1))
+  {
+    int difference = p - last_p1;
+    last_p1 = p;
+    switch(difference)
+    {
+      case MOVED_UP: return UP_P1;
+      case MOVED_DOWN: return DOWN_P1;
+      case MOVED_LEFT: return LEFT_P1;
+      case MOVED_RIGHT: return RIGHT_P1;
+      default: return ANY_P1;
+    }
+  } else {
+    cerr << "Unexpected field position.." << endl;
+  }
+  return -1337;
 }
 
 void Bot::makeMove(int time)
 {
-  cout << "not yet implemented" << endl;
+  cerr << "not yet implemented" << endl;
   printSettings();
+}
+
+void Bot::initialiseField()
+{
+  field.clear();
+  for (int i = 0; i < width; i++)
+  {
+    field.push_back(vector<int>());
+    for (int j = 0; j < height; j++)
+      field[i].push_back(EMPTY);
+  }
 }
 
 void Bot::printSettings()
 {
-  cout << "TimeBank : " << timeBank << endl;
-  cout << "TimePerMove : " << timePerMove << endl;
+  cerr << "TimeBank : " << timeBank << endl;
+  cerr << "TimePerMove : " << timePerMove << endl;
   if (names.size() >= 2)
-    cout << "PlayerNames : " << names[0] << ", " << names[1] << endl;
-  cout << "Player : " << player << endl;
-  cout << "id : " << id << endl;
-  cout << "width : " << width << endl;
-  cout << "height : " << height << endl;
-  cout << "round : " << round << endl;
-  cout << "field : " << field << endl << endl << endl;
+    cerr << "PlayerNames : " << names[0] << ", " << names[1] << endl;
+  cerr << "Player : " << player << endl;
+  cerr << "id : " << id << endl;
+  cerr << "width : " << width << endl;
+  cerr << "height : " << height << endl;
+  cerr << "round : " << round << endl;
+  printField();
+}
+
+void Bot::printField()
+{
+  cerr << endl << endl;
+  for (int j = 0; j < height; j++)
+  {
+    for (int i = 0; i < width; i++)
+      cerr << fieldToChar(field[i][j]);
+    cerr << endl;
+  }
+  cerr << endl << endl;
+}
+
+char Bot::fieldToChar(int f)
+{
+  switch (f)
+  {
+    case ANY_P1:
+    case LEFT_P0:
+    case LEFT_P1: return '<';
+    case ANY_P0:
+    case RIGHT_P0:
+    case RIGHT_P1: return '>';
+    case DOWN_P0:
+    case DOWN_P1: return 'v';
+    case UP_P0:
+    case UP_P1: return '^';
+    case WALL: return 'x';
+    case EMPTY: return ' ';
+    default: return '!';
+  }
 }

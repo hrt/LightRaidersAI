@@ -190,35 +190,35 @@ vector<int> Bot::generateMoves(int id, vector<vector<int>> field)
       moves.push_back(RIGHT);
       break;
     case UP:
-      if (x < (FIELD_WIDTH_R))
+      if (x < (FIELD_WIDTH_R) && field[x+1][y] == EMPTY)
         moves.push_back(RIGHT);
-      if (x > 0)
+      if (x > 0 && field[x-1][y] == EMPTY)
         moves.push_back(LEFT);
-      if (y > 0)
+      if (y > 0 && field[x][y-1] == EMPTY)
         moves.push_back(UP);
       break;
     case DOWN:
-      if (x < (FIELD_WIDTH_R))
+      if (x < (FIELD_WIDTH_R) && field[x+1][y] == EMPTY)
         moves.push_back(RIGHT);
-      if (x > 0)
+      if (x > 0 && field[x-1][y] == EMPTY)
         moves.push_back(LEFT);
-      if (y < FIELD_HEIGHT_R)
+      if (y < FIELD_HEIGHT_R && field[x][y+1] == EMPTY)
         moves.push_back(DOWN);
       break;
     case LEFT:
-      if (x > 0)
+      if (x > 0 && field[x-1][y] == EMPTY)
         moves.push_back(LEFT);
-      if (y < FIELD_HEIGHT_R)
+      if (y < FIELD_HEIGHT_R && field[x][y+1] == EMPTY)
         moves.push_back(DOWN);
-      if (y > 0)
+      if (y > 0 && field[x][y-1] == EMPTY)
         moves.push_back(UP);
       break;
     case RIGHT:
-      if (x < (FIELD_WIDTH_R))
+      if (x < (FIELD_WIDTH_R) && field[x+1][y] == EMPTY)
         moves.push_back(RIGHT);
-      if (y < FIELD_HEIGHT_R)
+      if (y < FIELD_HEIGHT_R && field[x][y+1] == EMPTY)
         moves.push_back(DOWN);
-      if (y > 0)
+      if (y > 0 && field[x][y-1] == EMPTY)
         moves.push_back(UP);
       break;
   }

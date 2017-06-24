@@ -103,11 +103,77 @@ int Bot::convertPosition(string position, int p)
 
 void Bot::makeMove(int time)
 {
-  vector<int> moves = generateMoves(id, field);
-  int randomIndex = rand() % (moves.size());
-  cout << moveToString(moves[randomIndex]) << endl;
-  printSettings();
+  int position = -1;
+  if (id == PID_0)
+  {
+    position = positionP0;
+  } else if (id == PID_1)
+  {
+    position = positionP1;
+  }
+
+  vector<int> moves = generateMoves(id, position, field);
+  if (moves.size() == 0)
+  {
+    cout << "no_moves" << endl;
+  }
+  else
+  {
+    int maxScore = -1;
+    int bestMove = -1;
+    for (int move : moves)
+    {
+      int tempPosition = position;
+      int currentScore = 0; 
+      vector<vector<int>> newField(field);
+      vector<int> childMoves = generateMoves(id, tempPosition, newField);
+
+
+      while (find(childMoves.begin(), childMoves.end(), move) != childMoves.end())
+      {
+        currentScore += 1;
+        newField = applyMove(id, tempPosition, move, newField);
+        childMoves = generateMoves(id, tempPosition, newField);
+      }
+
+      if (currentScore > maxScore)
+      {
+        maxScore = currentScore;
+        bestMove = move;
+      }
+    }
+    cout << moveToString(bestMove) << endl;
+  }
 }
+
+  vector<vector<int>> Bot::applyMove(int id, int &position, int move, vector<vector<int>> field)
+  {
+    int x = position%FIELD_WIDTH;
+    int y = position/FIELD_WIDTH;
+    field[x][y] = WALL;
+
+    switch (move)
+    {
+      case UP:
+        y -= 1;
+        break;
+      case DOWN:
+        y += 1;
+        break;
+      case LEFT:
+        x -= 1;
+        break;
+      case RIGHT:
+        x += 1;
+        break;
+      default:
+        cerr << "Invalid move (applyMove).." << endl;
+    }
+
+    field[x][y] = move;
+    position = x + y * FIELD_WIDTH;
+    return field;
+  }
 
 void Bot::initialiseField()
 {
@@ -131,10 +197,10 @@ void Bot::printSettings()
   cerr << "width : " << width << endl;
   cerr << "height : " << height << endl;
   cerr << "round : " << round << endl;
-  printField();
+  printField(field);
 }
 
-void Bot::printField()
+void Bot::printField(vector<vector<int>> field)
 {
   cerr << endl << endl;
   for (int j = 0; j < height; j++)
@@ -161,20 +227,9 @@ char Bot::fieldToChar(int f)
   }
 }
 
-vector<int> Bot::generateMoves(int id, vector<vector<int>> field)
+vector<int> Bot::generateMoves(int id, int position, vector<vector<int>> field)
 {
   vector<int> moves;
-  int position = -1;
-  if (id == PID_0)
-  {
-    position = positionP0;
-  } else if (id == PID_1)
-  {
-    position = positionP1;
-  } else {
-    cerr << "Unexpected id (generateMoves) .." << endl;
-    return moves;
-  }
 
   int x = position%FIELD_WIDTH;
   int y = position/FIELD_WIDTH;

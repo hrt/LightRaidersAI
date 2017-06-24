@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <time.h>
+#include <algorithm>
 #include "process.h"
 #include "util.h"
 
@@ -36,13 +37,14 @@ public:
   void updateGameField(std::string field);
   void makeMove(int time);
 private:
+  std::vector<std::vector<int>> applyMove(int id, int &position, int move, std::vector<std::vector<int>> field);
   std::string moveToString(int move);
-  std::vector<int> generateMoves(int id, std::vector<std::vector<int>> field);
+  std::vector<int> generateMoves(int id, int position, std::vector<std::vector<int>> field);
   int convertPosition(std::string position, int p);
   char fieldToChar(int f);
   void initialiseField();
   void printSettings();
-  void printField();
+  void printField(std::vector<std::vector<int>> field);
   int timeBank;
   int timePerMove;
   std::vector<std::string> names;

@@ -104,24 +104,31 @@ int Bot::convertPosition(string position, int p)
 void Bot::makeMove(int time)
 {
   int position = -1;
+  int enemyPosition = -1;
   if (id == PID_0)
   {
     position = positionP0;
+    enemyPosition = positionP1;
   } else if (id == PID_1)
   {
     position = positionP1;
+    enemyPosition = positionP0;
   }
 
-  vector<int> moves = generateMoves(id, position, field);
-  if (moves.size() == 0)
+  int enemyId = 1-id;
+
+  vector<int> myMoves = generateMoves(id, position, field);
+  vector<int> enemyMoves = generateMoves(enemyId, position, field);
+  if (myMoves.size() == 0)
   {
     cout << "no_moves" << endl;
   }
   else
   {
-    int maxScore = -1;
+    int maxScore = -999999;
     int bestMove = -1;
-    for (int move : moves)
+
+    for (int move : myMoves)
     {
       int tempPosition = position;
       int currentScore = 0; 
@@ -135,6 +142,32 @@ void Bot::makeMove(int time)
         newField = applyMove(id, tempPosition, move, newField);
         childMoves = generateMoves(id, tempPosition, newField);
       }
+
+      int minScore = 999999;
+
+      for (int move : enemyMoves)
+      {
+        int tempPosition = enemyPosition;
+        int currentScore = 0;
+
+        vector<int> childMoves = generateMoves(enemyId, tempPosition, newField);
+
+
+        while (find(childMoves.begin(), childMoves.end(), move) != childMoves.end())
+        {
+          currentScore -= 1;
+          newField = applyMove(enemyId, tempPosition, move, newField);
+          childMoves = generateMoves(enemyId, tempPosition, newField);
+        }
+
+        if (currentScore < minScore)
+        {
+          minScore = currentScore;
+        }
+
+      }
+
+      currentScore -= minScore;
 
       if (currentScore > maxScore)
       {

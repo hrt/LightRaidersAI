@@ -2,6 +2,15 @@
 #define PROCESS_H
 #include <string>
 
+#define FIELD_WIDTH 16
+#define FIELD_HEIGHT 16
+
+#define FIELD_WIDTH_R 15
+#define FIELD_HEIGHT_R 15
+
+#define PID_0 0
+#define PID_1 1
+
 const std::string PROCESS_SETTINGS = std::string("settings");
 const std::string PROCESS_UPDATE = std::string("update");
 const std::string PRCOESS_ACTION = std::string("action");

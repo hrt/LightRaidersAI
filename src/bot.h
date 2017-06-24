@@ -3,28 +3,23 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <time.h>
 #include "process.h"
 #include "util.h"
 
-#define UP_P0 -1
-#define DOWN_P0 -2
-#define LEFT_P0 -3
-#define RIGHT_P0 -4
-#define ANY_P0 -5
-
-#define UP_P1 1
-#define DOWN_P1 2
-#define LEFT_P1 3
-#define RIGHT_P1 4
-#define ANY_P1 5
+#define LEFT -1
+#define RIGHT 1
+#define UP (-FIELD_WIDTH)
+#define DOWN (FIELD_WIDTH)
+#define ANY -666
 
 #define EMPTY 0
 #define WALL 666
 
 #define MOVED_LEFT -1
 #define MOVED_RIGHT 1
-#define MOVED_UP (-16)
-#define MOVED_DOWN (16)
+#define MOVED_UP (-FIELD_WIDTH)
+#define MOVED_DOWN (FIELD_WIDTH)
 
 class Bot
 {
@@ -41,6 +36,8 @@ public:
   void updateGameField(std::string field);
   void makeMove(int time);
 private:
+  std::string moveToString(int move);
+  std::vector<int> generateMoves(int id, std::vector<std::vector<int>> field);
   int convertPosition(std::string position, int p);
   char fieldToChar(int f);
   void initialiseField();
@@ -54,8 +51,8 @@ private:
   int width;
   int height;
   int round;
-  int last_p0;
-  int last_p1;
+  int positionP0;
+  int positionP1;
   std::vector<std::vector<int>> field;
 };
 

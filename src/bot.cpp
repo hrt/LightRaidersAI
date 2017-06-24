@@ -4,7 +4,7 @@ using namespace std;
 
 Bot::Bot()
 {
-
+  srand(time(NULL));
 }
 
 void Bot::setTimeBank(int t)
@@ -41,8 +41,8 @@ void Bot::setFieldWidth(int width)
 
 void Bot::setFieldHeight(int height)
 {
-  last_p0 = -10000;
-  last_p1 = -10000;
+  positionP0 = -10000;
+  positionP1 = -10000;
   this->height = height;
   initialiseField();
 }
@@ -61,7 +61,6 @@ void Bot::updateGameField(string positions)
     for (int i = 0; i < width; i++)
       field[i][j] = convertPosition(position[i + j * width], i + j * width);
   }
-  // this->field = field;
 }
 
 int Bot::convertPosition(string position, int p)
@@ -74,27 +73,27 @@ int Bot::convertPosition(string position, int p)
     return WALL;
   } else if (!position.compare(POS_P0))
   {
-    int difference = p - last_p0;
-    last_p0 = p;
+    int difference = p - positionP0;
+    positionP0 = p;
     switch (difference)
     {
-      case MOVED_UP: return UP_P0;
-      case MOVED_DOWN: return DOWN_P0;
-      case MOVED_LEFT: return LEFT_P0;
-      case MOVED_RIGHT: return RIGHT_P0;
-      default: return ANY_P0;
+      case MOVED_UP: return UP;
+      case MOVED_DOWN: return DOWN;
+      case MOVED_LEFT: return LEFT;
+      case MOVED_RIGHT: return RIGHT;
+      default: return ANY;
     }
   } else if (!position.compare(POS_P1))
   {
-    int difference = p - last_p1;
-    last_p1 = p;
+    int difference = p - positionP1;
+    positionP1 = p;
     switch(difference)
     {
-      case MOVED_UP: return UP_P1;
-      case MOVED_DOWN: return DOWN_P1;
-      case MOVED_LEFT: return LEFT_P1;
-      case MOVED_RIGHT: return RIGHT_P1;
-      default: return ANY_P1;
+      case MOVED_UP: return UP;
+      case MOVED_DOWN: return DOWN;
+      case MOVED_LEFT: return LEFT;
+      case MOVED_RIGHT: return RIGHT;
+      default: return ANY;
     }
   } else {
     cerr << "Unexpected field position.." << endl;
@@ -104,7 +103,9 @@ int Bot::convertPosition(string position, int p)
 
 void Bot::makeMove(int time)
 {
-  cerr << "not yet implemented" << endl;
+  vector<int> moves = generateMoves(id, field);
+  int randomIndex = rand() % (moves.size());
+  cout << moveToString(moves[randomIndex]) << endl;
   printSettings();
 }
 
@@ -149,18 +150,90 @@ char Bot::fieldToChar(int f)
 {
   switch (f)
   {
-    case ANY_P1:
-    case LEFT_P0:
-    case LEFT_P1: return '<';
-    case ANY_P0:
-    case RIGHT_P0:
-    case RIGHT_P1: return '>';
-    case DOWN_P0:
-    case DOWN_P1: return 'v';
-    case UP_P0:
-    case UP_P1: return '^';
+    case ANY: return 'O';
+    case LEFT: return '<';
+    case RIGHT: return '>';
+    case DOWN: return 'v';
+    case UP: return '^';
     case WALL: return 'x';
     case EMPTY: return ' ';
     default: return '!';
+  }
+}
+
+vector<int> Bot::generateMoves(int id, vector<vector<int>> field)
+{
+  vector<int> moves;
+  int position = -1;
+  if (id == PID_0)
+  {
+    position = positionP0;
+  } else if (id == PID_1)
+  {
+    position = positionP1;
+  } else {
+    cerr << "Unexpected id (generateMoves) .." << endl;
+    return moves;
+  }
+
+  int x = position%FIELD_WIDTH;
+  int y = position/FIELD_WIDTH;
+
+  int direction = field[x][y];
+
+  switch (direction)
+  {
+    case ANY:
+      moves.push_back(UP);
+      moves.push_back(DOWN);
+      moves.push_back(LEFT);
+      moves.push_back(RIGHT);
+      break;
+    case UP:
+      if (x < (FIELD_WIDTH_R))
+        moves.push_back(RIGHT);
+      if (x > 0)
+        moves.push_back(LEFT);
+      if (y > 0)
+        moves.push_back(UP);
+      break;
+    case DOWN:
+      if (x < (FIELD_WIDTH_R))
+        moves.push_back(RIGHT);
+      if (x > 0)
+        moves.push_back(LEFT);
+      if (y < FIELD_HEIGHT_R)
+        moves.push_back(DOWN);
+      break;
+    case LEFT:
+      if (x > 0)
+        moves.push_back(LEFT);
+      if (y < FIELD_HEIGHT_R)
+        moves.push_back(DOWN);
+      if (y > 0)
+        moves.push_back(UP);
+      break;
+    case RIGHT:
+      if (x < (FIELD_WIDTH_R))
+        moves.push_back(RIGHT);
+      if (y < FIELD_HEIGHT_R)
+        moves.push_back(DOWN);
+      if (y > 0)
+        moves.push_back(UP);
+      break;
+  }
+
+  return moves;
+}
+
+string Bot::moveToString(int move)
+{
+  switch (move)
+  {
+    case (UP): return "up";
+    case (DOWN): return "down";
+    case (LEFT): return "left";
+    case (RIGHT): return "right";
+    default: return "Invalid Move (moveToString).."; 
   }
 }

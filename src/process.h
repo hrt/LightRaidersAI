@@ -18,4 +18,9 @@ const std::string UPDATE_GAME_ROUND = std::string("round");
 const std::string UPDATE_GAME_FIELD = std::string("field");
 
 const std::string ACTION_MOVE = std::string("move");
+
+const std::string MOVE_UP = std::string("up");
+const std::string MOVE_DOWN = std::string("down");
+const std::string MOVE_LEFT = std::string("left");
+const std::string MOVE_RIGHT = std::string("right");
 #endif

@@ -1,8 +1,10 @@
 #include "parser.h"
+#include "util.h"
 using namespace std;
 
-Parser::Parser(Bot &Bot) : bot(bot)
+Parser::Parser(Bot &bot)
 {
+  this->bot = bot;
 }
 
 void Parser::parseLine()
@@ -38,6 +40,16 @@ string Parser::parseWord(stringstream &myStream)
   }
 }
 
+int Parser::parseInt(stringstream &myStream)
+{
+  int i;
+  while (true)
+  {
+    if (myStream >> i)
+      return i;
+  }
+}
+
 void Parser::parseSettings(stringstream &myStream)
 {
 
@@ -45,25 +57,26 @@ void Parser::parseSettings(stringstream &myStream)
 
   if (!settings.compare(SETTINGS_TIMEBANK))
   {
-    cout << SETTINGS_TIMEBANK << endl;
+    bot.setTimeBank(parseInt(myStream));
   } else if (!settings.compare(SETTINGS_YOUR_BOT))
   {
-    cout << SETTINGS_YOUR_BOT << endl;
+    bot.setYourBot(parseWord(myStream));
   } else if (!settings.compare(SETTINGS_PLAYER_NAMES))
   {
-    cout << SETTINGS_PLAYER_NAMES << endl;
+    std::vector<string> players = split(parseWord(myStream), ',');
+    bot.setPlayerNames(players[0], players[1]);
   } else if (!settings.compare(SETTINGS_FIELD_WIDTH))
   {
-    cout << SETTINGS_FIELD_WIDTH << endl;
+    bot.setFieldWidth(parseInt(myStream));
   } else if (!settings.compare(SETTINGS_FIELD_HEIGHT))
   {
-    cout << SETTINGS_FIELD_HEIGHT << endl;
+    bot.setFieldHeight(parseInt(myStream));
   } else if (!settings.compare(SETTINGS_YOUR_BOT_ID))
   {
-    cout << SETTINGS_YOUR_BOT_ID << endl;
+    bot.setYourBotId(parseInt(myStream));
   } else if (!settings.compare(SETTINGS_TIME_PER_MOVE))
   {
-    cout << SETTINGS_TIME_PER_MOVE << endl;
+    bot.setTimePerMove(parseInt(myStream));
   } else {
     cout << "Undefined settings.." << endl;
   }
@@ -77,10 +90,10 @@ void Parser::parseUpdate(stringstream &myStream)
 
   if (!update.compare(UPDATE_GAME_ROUND))
   {
-    cout << UPDATE_GAME_ROUND << endl;
+    bot.updateGameRound(parseInt(myStream));
   } else if (!update.compare(UPDATE_GAME_FIELD))
   {
-    cout << UPDATE_GAME_FIELD << endl;
+    bot.updateGameField(parseWord(myStream));
   } else {
     cout << "Undefined update.." << endl;
   }
@@ -92,7 +105,7 @@ void Parser::parseAction(stringstream &myStream)
 
   if (!action.compare(ACTION_MOVE))
   {
-    cout << ACTION_MOVE << endl;
+    bot.makeMove(parseInt(myStream));
   } else {
     cout << "Undefined action.." << endl;
   }

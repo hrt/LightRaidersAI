@@ -6,5 +6,8 @@ int main()
 {
   Bot bot = Bot();
   Parser parser = Parser(bot);
-  parser.parseLine();  
+  while (true)
+  {
+    parser.parseLine();
+  }
 }

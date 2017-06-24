@@ -13,6 +13,7 @@ public:
   void parseLine();
 private:
   std::string parseWord(std::stringstream &myStream);
+  int parseInt(std::stringstream &myStream);
   void parseSettings(std::stringstream &myStream);
   void parseUpdate(std::stringstream &myStream);
   void parseAction(std::stringstream &myStream);

@@ -1,5 +1,6 @@
 A very simplistic AI written in C++ for the the light cycle game "Tron" (see here https://www.youtube.com/watch?v=Jyys22xoWDI)
 
+![banner](http://i.imgur.com/0v9dCI5.png)
 
 ## Compiling
 

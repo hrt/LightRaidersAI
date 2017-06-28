@@ -83,6 +83,11 @@ int Bot::getFieldHeight()
   return height;
 }
 
+int Bot::getRound()
+{
+  return round;
+}
+
 
 void Bot::updateGameRound(int round)
 {

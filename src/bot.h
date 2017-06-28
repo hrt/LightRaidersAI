@@ -42,6 +42,7 @@ public:
   int getYourBotId();
   int getFieldWidth();
   int getFieldHeight();
+  int getRound();
 
   void updateGameRound(int round);
   void updateGameField(std::string field);

@@ -12,6 +12,7 @@ void Bot::setTimeBank(int t)
   timeBank = t;
 }
 
+
 void Bot::setTimePerMove(int t)
 {
   timePerMove = t;
@@ -46,6 +47,42 @@ void Bot::setFieldHeight(int height)
   this->height = height;
   initialiseField();
 }
+
+int Bot::getTimeBank()
+{
+  return timeBank;
+}
+
+int Bot::getTimePerMove()
+{
+  return timePerMove;
+}
+
+std::vector<std::string> Bot::getPlayerNames()
+{
+  return names;
+}
+
+std::string Bot::getYourBot()
+{
+  return player;
+}
+
+int Bot::getYourBotId()
+{
+  return id;
+}
+
+int Bot::getFieldWidth()
+{
+  return width;
+}
+
+int Bot::getFieldHeight()
+{
+  return height;
+}
+
 
 void Bot::updateGameRound(int round)
 {

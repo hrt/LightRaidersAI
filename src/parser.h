@@ -17,7 +17,7 @@ private:
   void parseSettings(std::stringstream &myStream);
   void parseUpdate(std::stringstream &myStream);
   void parseAction(std::stringstream &myStream);
-  Bot bot;
+  Bot* bot;
   int width;
   int height;
 };

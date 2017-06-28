@@ -26,6 +26,7 @@ class Bot
 {
 public:
   Bot();
+
   void setTimeBank(int t);
   void setTimePerMove(int t);
   void setPlayerNames(std::string player0, std::string player1);
@@ -33,6 +34,15 @@ public:
   void setYourBotId(int id);
   void setFieldWidth(int width);
   void setFieldHeight(int height);
+
+  int getTimeBank();
+  int getTimePerMove();
+  std::vector<std::string> getPlayerNames();
+  std::string getYourBot();
+  int getYourBotId();
+  int getFieldWidth();
+  int getFieldHeight();
+
   void updateGameRound(int round);
   void updateGameField(std::string field);
   void makeMove(int time);

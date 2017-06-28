@@ -13,7 +13,7 @@ DEPS    = $(patsubst %,$(SRCDIR)/%,$(_DEPS))
 _OBJ		= $(OOBJ) main.o
 OBJ			= $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
-_TOBJ		= $(OOBJ) test.o
+_TOBJ		= $(OOBJ) test.o bot_test.o util_test.o parser_test.o
 TOBJ		=  $(patsubst %,$(OBJDIR)/%,$(_TOBJ))
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
@@ -32,4 +32,4 @@ clean:
 	rm -f $(OBJDIR)/*.o $(OUTDIR)/LightRaider $(OUTDIR)/Test
 
 check: $(OUTDIR)/LightRaider $(OUTDIR)/Test
-	echo "not implemented yet"
+	./$(OUTDIR)/Test < input.txt

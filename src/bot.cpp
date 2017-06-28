@@ -131,7 +131,7 @@ void Bot::makeMove(int time)
     for (int move : myMoves)
     {
       int tempPosition = position;
-      int currentScore = 0; 
+      int currentScore = 0;
       vector<vector<int>> newField(field);
       vector<int> childMoves = generateMoves(id, tempPosition, newField);
 
@@ -322,6 +322,6 @@ string Bot::moveToString(int move)
     case (DOWN): return "down";
     case (LEFT): return "left";
     case (RIGHT): return "right";
-    default: return "Invalid Move (moveToString).."; 
+    default: return "Invalid Move (moveToString)..";
   }
 }

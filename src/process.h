@@ -33,7 +33,7 @@ const std::string MOVE_DOWN = std::string("down");
 const std::string MOVE_LEFT = std::string("left");
 const std::string MOVE_RIGHT = std::string("right");
 
-const char POS_DELIM = ','; 
+const char POS_DELIM = ',';
 const std::string POS_EMPTY = std::string(".");
 const std::string POS_WALL = std::string("x");
 const std::string POS_P0 = std::string("0");

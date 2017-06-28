@@ -6,7 +6,6 @@ int main()
   bool allPassed = true;
   allPassed &= utilTest();
   allPassed &= parserTest();
-  allPassed &= botTest();
 
   if (!allPassed)
     return EXIT_FAILURE;

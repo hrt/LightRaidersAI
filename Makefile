@@ -13,7 +13,7 @@ DEPS    = $(patsubst %,$(SRCDIR)/%,$(_DEPS))
 _OBJ		= $(OOBJ) main.o
 OBJ			= $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
-_TOBJ		= $(OOBJ) test.o bot_test.o util_test.o parser_test.o
+_TOBJ		= $(OOBJ) test.o util_test.o parser_test.o
 TOBJ		=  $(patsubst %,$(OBJDIR)/%,$(_TOBJ))
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)

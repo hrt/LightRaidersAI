@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cstdlib>
 #include "parser_test.h"
-#include "bot_test.h"
 #include "util_test.h"
 
 #endif
